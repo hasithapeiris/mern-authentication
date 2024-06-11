@@ -1,3 +1,5 @@
+import User from "../models/userModel.js";
+
 // @desc Auth user/set token
 // route POST /api/users/auth
 // @access Public
@@ -8,8 +10,28 @@ const authUser = (req, res) => {
 // @desc Register user
 // route POST /api/users
 // @access Public
-const registerUser = (req, res) => {
-  res.status(200).json({ message: "Register user" });
+const registerUser = async (req, res) => {
+  const { name, email, password } = req.body;
+
+  try {
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      res.status(400);
+      throw new Error("User already exists");
+    }
+
+    const newUser = new User({
+      name,
+      email,
+      password,
+    });
+
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
 
 // @desc Logout user

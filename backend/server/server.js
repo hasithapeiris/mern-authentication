@@ -11,6 +11,11 @@ connectDB();
 
 const app = express();
 
+// Middleware for parsing incoming requests with json payloads
+app.use(express.json());
+// Allow sending form data
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/api/users", userRoutes);
 
 app.use(notFound);
