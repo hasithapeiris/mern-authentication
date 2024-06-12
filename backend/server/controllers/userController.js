@@ -56,18 +56,27 @@ const registerUser = async (req, res) => {
 // route POST /api/users
 // @access Private
 const logoutUser = async (req, res) => {
-  res.cookie("jwt", "", {
-    httpOnly: true,
-    expires: new Date(0),
-  });
-  res.status(200).json({ message: "User logged out" });
+  try {
+    res.cookie("jwt", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
+    res.status(200).json({ message: "User logged out" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // @desc Get user profile
 // route GET /api/users/id
 // @access Private
 const getUserProfile = async (req, res) => {
-  res.status(200).json({ message: "Get user profile" });
+  const user = {
+    _id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+  };
+  res.status(200).json(user);
 };
 
 // @desc Update user profile

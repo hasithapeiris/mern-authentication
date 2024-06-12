@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 dotenv.config();
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
@@ -15,6 +16,9 @@ const app = express();
 app.use(express.json());
 // Allow sending form data
 app.use(express.urlencoded({ extended: true }));
+
+// Extract cookie data from HTTP requests
+app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
 
