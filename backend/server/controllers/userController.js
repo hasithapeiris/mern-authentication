@@ -55,14 +55,18 @@ const registerUser = async (req, res) => {
 // @desc Logout user
 // route POST /api/users
 // @access Private
-const logoutUser = (req, res) => {
-  res.status(200).json({ message: "Logout user" });
+const logoutUser = async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: "User logged out" });
 };
 
 // @desc Get user profile
 // route GET /api/users/id
 // @access Private
-const getUserProfile = (req, res) => {
+const getUserProfile = async (req, res) => {
   res.status(200).json({ message: "Get user profile" });
 };
 
